@@ -1,6 +1,16 @@
 name:           99-haskell-problems
 version:        0.1
 cabal-version:  >= 1.2
+author:         Nathan Dotz
+copyright:      2011 Nathan Dotz
+license:        BSD
+homepage:       http://sleepynate.com
+synopsis:       99 Haskell Problems
+description:    
+                Just some work on the 99 Lisp Problems as translated to haskell.
+                .
+                More Info:
+                http://haskell.org/haskellwiki/H-99:_Ninety-Nine_Haskell_Problems
 
 executable 99-haskell-problems
   hs-source-dirs:  src
