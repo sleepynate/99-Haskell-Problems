@@ -58,8 +58,8 @@ elementAt series index = if index == 1
         else elementAt (tail series) (index - 1)
 
 problem3 = test [
-        "second element of [1,2,3]" ~: 2 ~=? (elementAt [1,2,3] 2),
-        "fifth element of \"haskell\"" ~: 'e' ~=? (elementAt "haskell" 5)
+        "second element of [1,2,3]" ~: 2 ~=? (elementAt [1,2,3] 2)
+        , "fifth element of \"haskell\"" ~: 'e' ~=? (elementAt "haskell" 5)
         ]
 
 {- 
@@ -127,22 +127,19 @@ isPalindrome (x:xs) = if (length xs <= 1) then True
 
 problem6 = test [
         "check a list"
-            ~: False ~=? (isPalindrome [1,2,3]),
-        "check a string"
-            ~: True ~=? (isPalindrome "madamimadam"),
-        "check a longer list"
+            ~: False ~=? (isPalindrome [1,2,3])
+        , "check a string"
+            ~: True ~=? (isPalindrome "madamimadam")
+        , "check a longer list"
             ~: True ~=? (isPalindrome [1,2,4,8,16,8,4,2,1])
         ] 
 {- 
- - 7 Problem 7
- - (**) Flatten a nested list structure.
+ - Problem 7
+ - Flatten a nested list structure.
  - 
- - Transform a list, possibly holding lists as elements into a `flat' list by replacing each list with its elements (recursively).
+ - Transform a list, possibly holding lists as elements into a `flat'
+ - list by replacing each list with its elements (recursively).
  - 
- - Example:
- - 
- - * (my-flatten '(a (b (c d) e)))
- - (A B C D E)
  - Example in Haskell:
  - 
  - *Main> flatten (Elem 5)
@@ -151,9 +148,23 @@ problem6 = test [
  - [1,2,3,4,5]
  - *Main> flatten (List [])
  - []
- - Solutions
- - 
- - 
+ -}
+data NestedList a = Elem a | List [NestedList a]
+
+myflatten :: NestedList a -> [a]
+myflatten (Elem x) = [x]
+myflatten (List (x:xs)) = myflatten x ++ myflatten (List xs)
+myflatten (List []) = []
+
+problem7 = test [
+        "flatten a 1-element list"
+            ~: [5] ~=? myflatten (Elem 5)
+        , "flatten a multi-depth list"
+            ~: [1,2,3,4,5] ~=? myflatten (List [Elem 1, List [Elem 2, List [Elem 3, Elem 4], Elem 5]])
+        -- , "flattening empty list is empty list"
+        --     ~: [] ~=? myflatten (List [])
+        ]
+{- 
  - 8 Problem 8
  - (**) Eliminate consecutive duplicates of list elements.
  - 
@@ -201,7 +212,8 @@ tests = TestList [TestLabel "Problem 1" problem1,
                   TestLabel "Problem 3" problem3,
                   TestLabel "Problem 4" problem4,
                   TestLabel "Problem 5" problem5,
-                  TestLabel "Problem 6" problem6
+                  TestLabel "Problem 6" problem6,
+                  TestLabel "Problem 7" problem7
                   ]
 
 main::IO()
