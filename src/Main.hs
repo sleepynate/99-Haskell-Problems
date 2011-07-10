@@ -165,22 +165,28 @@ problem7 = test [
         --     ~: [] ~=? myflatten (List [])
         ]
 {- 
- - 8 Problem 8
- - (**) Eliminate consecutive duplicates of list elements.
+ - Problem 8
+ - Eliminate consecutive duplicates of list elements.
+ - If a list contains repeated elements they should be replaced with a single
+ - copy of the element. The order of the elements should not be changed.
  - 
- - If a list contains repeated elements they should be replaced with a single copy of the element. The order of the elements should not be changed.
- - 
- - Example:
- - 
- - * (compress '(a a a a b c c a a d e e e e))
- - (A B C A D E)
  - Example in Haskell:
  - 
  - > compress ["a","a","a","a","b","c","c","a","a","d","e","e","e","e"]
  - ["a","b","c","a","d","e"]
- - Solutions
- - 
- - 9 Problem 9
+ -}
+compress :: Eq a => [a] -> [a]
+compress (x:[]) = [x]
+compress (x:xs) = if x == head xs
+                then compress xs
+                else x:(compress xs)
+
+problem8 = test [
+        "remove duplicates from an iterable container"
+        ~: ["a","b","c","a","d","e"] ~=? compress ["a","a","a","a","b","c","c","a","a","d","e","e","e","e"]
+        ]
+ 
+{- 9 Problem 9
  - (**) Pack consecutive duplicates of list elements into sublists. If a list contains repeated elements they should be placed in separate sublists.
  - 
  - Example:
