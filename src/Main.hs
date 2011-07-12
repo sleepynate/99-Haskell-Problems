@@ -186,21 +186,29 @@ problem8 = test [
         ~: ["a","b","c","a","d","e"] ~=? compress ["a","a","a","a","b","c","c","a","a","d","e","e","e","e"]
         ]
  
-{- 9 Problem 9
- - (**) Pack consecutive duplicates of list elements into sublists. If a list contains repeated elements they should be placed in separate sublists.
+{- Problem 9
+ - Pack consecutive duplicates of list elements into sublists. If a list
+ - contains repeated elements they should be placed in separate sublists.
  - 
- - Example:
- - 
- - * (pack '(a a a a b c c a a d e e e e))
- - ((A A A A) (B) (C C) (A A) (D) (E E E E))
  - Example in Haskell:
  - 
  - *Main> pack ['a', 'a', 'a', 'a', 'b', 'c', 'c', 'a', 
  -              'a', 'd', 'e', 'e', 'e', 'e']
  - ["aaaa","b","cc","aa","d","eeee"]
- - Solutions
- - 
- - 10 Problem 10
+ -}
+
+pack :: Eq a => [a] -> [[a]]
+pack [] = []
+pack (x:xs) = ([x] ++ takeWhile (== x) xs) : pack (dropWhile (== x) xs)
+
+problem9 = test [
+        "pack conecutive duplicates of list elements into sublists"
+        ~: ["aaaa","b","cc","aa","d","eeee"]
+        ~=? pack ['a', 'a', 'a', 'a', 'b', 'c', 'c', 'a', 'a', 'd', 'e', 'e', 'e', 'e']
+        ]
+
+ 
+{- 10 Problem 10
  - (*) Run-length encoding of a list. Use the result of problem P09 to implement the so-called run-length encoding data compression method. Consecutive duplicates of elements are encoded as lists (N E) where N is the number of duplicates of the element E.
  - 
  - Example:
@@ -219,7 +227,9 @@ tests = TestList [TestLabel "Problem 1" problem1,
                   TestLabel "Problem 4" problem4,
                   TestLabel "Problem 5" problem5,
                   TestLabel "Problem 6" problem6,
-                  TestLabel "Problem 7" problem7
+                  TestLabel "Problem 7" problem7,
+                  TestLabel "Problem 8" problem8,
+                  TestLabel "Problem 9" problem9
                   ]
 
 main::IO()
