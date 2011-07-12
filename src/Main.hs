@@ -191,7 +191,6 @@ problem8 = test [
  - contains repeated elements they should be placed in separate sublists.
  - 
  - Example in Haskell:
- - 
  - *Main> pack ['a', 'a', 'a', 'a', 'b', 'c', 'c', 'a', 
  -              'a', 'd', 'e', 'e', 'e', 'e']
  - ["aaaa","b","cc","aa","d","eeee"]
@@ -206,20 +205,30 @@ problem9 = test [
         ~: ["aaaa","b","cc","aa","d","eeee"]
         ~=? pack ['a', 'a', 'a', 'a', 'b', 'c', 'c', 'a', 'a', 'd', 'e', 'e', 'e', 'e']
         ]
-
  
-{- 10 Problem 10
- - (*) Run-length encoding of a list. Use the result of problem P09 to implement the so-called run-length encoding data compression method. Consecutive duplicates of elements are encoded as lists (N E) where N is the number of duplicates of the element E.
+{- Problem 10
+ - Run-length encoding of a list. Use the result of problem P09 to implement
+ - the so-called run-length encoding data compression method. Consecutive
+ - duplicates of elements are encoded as lists (N E) where N is the number of
+ - duplicates of the element E.
  - 
- - Example:
- - 
- - * (encode '(a a a a b c c a a d e e e e))
- - ((4 A) (1 B) (2 C) (2 A) (1 D)(4 E))
  - Example in Haskell:
- - 
  - encode "aaaabccaadeeee"
  - [(4,'a'),(1,'b'),(2,'c'),(2,'a'),(1,'d'),(4,'e')]
  -}
+
+encode :: Eq a => [a] -> [(Int, a)]
+encode [] = []
+encode xs = encode' (pack xs)
+        where
+        encode' [] = []
+        encode' (x:xs) = ((length x), (head x)) : encode' xs
+
+problem10 = test [
+        "run-length encode a list of duplicates"
+        ~: [(4,'a'),(1,'b'),(2,'c'),(2,'a'),(1,'d'),(4,'e')]
+        ~=? encode "aaaabccaadeeee"
+        ]
 
 tests = TestList [TestLabel "Problem 1" problem1,
                   TestLabel "Problem 2" problem2,
@@ -229,7 +238,8 @@ tests = TestList [TestLabel "Problem 1" problem1,
                   TestLabel "Problem 6" problem6,
                   TestLabel "Problem 7" problem7,
                   TestLabel "Problem 8" problem8,
-                  TestLabel "Problem 9" problem9
+                  TestLabel "Problem 9" problem9,
+                  TestLabel "Problem 10" problem10
                   ]
 
 main::IO()
