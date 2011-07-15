@@ -100,6 +100,17 @@ problem13 = test [
  - > dupli [1, 2, 3]
  - [1,1,2,2,3,3]
  -}
+
+dupli :: [a] -> [a]
+dupli [] = []
+dupli (x:xs) = x:x:dupli xs
+
+problem14 = test [
+            "Duplicate the elements of a list"
+            ~: [1,1,2,2,3,3]
+            ~=? dupli [1,2,3]
+            ]
+
 {- 
  - Problem 15
  - Replicate the elements of a list a given number of times.
@@ -165,8 +176,9 @@ problem13 = test [
  - 
 -}
 
-tests11_20 = TestList [TestLabel "Problem 11" problem11,
+tests11_20 = [TestLabel "Problem 11" problem11,
                     TestLabel "Problem 12" problem12,
-                    TestLabel "Problem 13" problem13
+                    TestLabel "Problem 13" problem13,
+                    TestLabel "Problem 14" problem14
                     ]
 

@@ -231,7 +231,7 @@ problem10 = test [
         ~=? encode "aaaabccaadeeee"
         ]
 
-tests1_10 = TestList [TestLabel "Problem 1" problem1,
+tests1_10 = [TestLabel "Problem 1" problem1,
                   TestLabel "Problem 2" problem2,
                   TestLabel "Problem 3" problem3,
                   TestLabel "Problem 4" problem4,
