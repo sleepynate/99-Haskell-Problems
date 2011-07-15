@@ -73,6 +73,25 @@ problem12 = test [
  -  Multiple 2 'a',Single 'd',Multiple 4 'e']
  - 
  -}
+encodeDirect :: Eq a => [a] -> [ MultiOrSingle a ]
+encodeDirect x = map encConvert $ runlengther x
+    where
+    encConvert (1, y) = Single y
+    encConvert (z, y) = Multiple z y
+    runlengther b = foldr runlengther' [] b
+        where
+        runlengther' c [] = []
+        runlengther' c (d@(e,f):ds)
+            | c == f  = (1+e, c):ds
+            | otherwise = (2,c):d:ds
+
+problem13 = test [
+            "Run-length encode by counting not making sublists"
+            ~: [Multiple 4 'a', Single 'b', Multiple 2 'c',
+                Multiple 2 'a', Single 'd', Multiple 4 'e']
+            ~=? encodeDirect "aaaabccaadeeee"
+            ]
+
 {-
  - Problem 14
  - Duplicate the elements of a list.
@@ -147,6 +166,7 @@ problem12 = test [
 -}
 
 tests11_20 = TestList [TestLabel "Problem 11" problem11,
-                    TestLabel "Problem 12" problem12
+                    TestLabel "Problem 12" problem12,
+                    TestLabel "Problem 13" problem13
                     ]
 
