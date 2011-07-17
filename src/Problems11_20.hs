@@ -73,17 +73,18 @@ problem12 = test [
  -  Multiple 2 'a',Single 'd',Multiple 4 'e']
  - 
  -}
+
 encodeDirect :: Eq a => [a] -> [ MultiOrSingle a ]
-encodeDirect x = map encConvert $ runlengther x
+encodeDirect b = map encodeHelper (encode' b)
     where
-    encConvert (1, y) = Single y
-    encConvert (z, y) = Multiple z y
-    runlengther b = foldr runlengther' [] b
+    encodeHelper (1,x) = Single x
+    encodeHelper (z,x) = Multiple z x
+    encode' = foldr encode'' []
         where
-        runlengther' c [] = []
-        runlengther' c (d@(e,f):ds)
-            | c == f  = (1+e, c):ds
-            | otherwise = (2,c):d:ds
+        encode'' x [] = [(1,x)]
+        encode'' x (y@(a,b):ys)
+            | x == b  = (1+a,x):ys
+            | otherwise = (1,x):y:ys
 
 problem13 = test [
             "Run-length encode by counting not making sublists"
