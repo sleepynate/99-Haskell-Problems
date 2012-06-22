@@ -121,6 +121,16 @@ problem14 = test [
  - "aaabbbccc"
  - 
  -}
+
+repli :: [a] -> Int -> [a]
+repli [] _ = []
+repli (x:xs) y = (replicate y x) ++ repli xs y
+
+problem15 = test [
+            "Replicate the elements of a list x times"
+                ~: "aaabbbccc"
+                ~=? repli "abc" 3
+                ]
 {- 
  - Problem 16
  - Drop every N'th element from a list.
@@ -180,6 +190,7 @@ problem14 = test [
 tests11_20 = [TestLabel "Problem 11" problem11,
                     TestLabel "Problem 12" problem12,
                     TestLabel "Problem 13" problem13,
-                    TestLabel "Problem 14" problem14
+                    TestLabel "Problem 14" problem14,
+                    TestLabel "Problem 15" problem15
                     ]
 
