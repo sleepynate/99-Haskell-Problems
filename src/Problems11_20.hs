@@ -140,6 +140,18 @@ problem15 = test [
  - "abdeghk"
  - 
  -}
+
+dropEvery :: [a] -> Int -> [a]
+dropEvery [] _ = []
+dropEvery xs y = if length xs < y
+                 then xs
+                 else init (take y xs) ++ dropEvery (drop y xs) y
+
+problem16 = test [
+            "Drop every N'th element of a list"
+                ~: "abdeghk"
+                ~=? dropEvery "abcdefghik" 3
+                ]
 {- 
  - Problem 17
  - Split a list into two parts; the length of the first part is given.
@@ -191,6 +203,7 @@ tests11_20 = [TestLabel "Problem 11" problem11,
                     TestLabel "Problem 12" problem12,
                     TestLabel "Problem 13" problem13,
                     TestLabel "Problem 14" problem14,
-                    TestLabel "Problem 15" problem15
+                    TestLabel "Problem 15" problem15,
+                    TestLabel "Problem 15" problem16
                     ]
 
