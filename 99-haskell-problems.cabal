@@ -1,6 +1,6 @@
-name:           99-haskell-problems
+name:           99haskellproblems
 version:        0.1
-cabal-version:  >= 1.2
+cabal-version:  >= 1.9.2
 author:         Nathan Dotz
 copyright:      2011 Nathan Dotz
 license:        BSD
@@ -17,3 +17,8 @@ executable 99-haskell-problems
   main-is:         Main.hs
   build-depends:   base
 
+Test-Suite test-foo
+    type:       exitcode-stdio-1.0
+    hs-source-dirs:  src
+    main-is:    Test.hs
+    build-depends: base, HUnit
