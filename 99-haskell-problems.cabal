@@ -11,6 +11,7 @@ description:
                 .
                 More Info:
                 http://haskell.org/haskellwiki/H-99:_Ninety-Nine_Haskell_Problems
+build-type:     Custom
 
 executable 99-haskell-problems
   hs-source-dirs:  src
