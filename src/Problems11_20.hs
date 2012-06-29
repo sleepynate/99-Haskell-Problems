@@ -5,14 +5,16 @@ import qualified Problems1_10
 {-
  - Problem 11
  - Modified run-length encoding.
- - 
- - Modify the result of problem 10 in such a way that if an element has no duplicates it is simply copied into the result list. Only elements with duplicates are transferred as (N E) lists.
- - 
+ -
+ - Modify the result of problem 10 in such a way that if an element has no
+ - duplicates it is simply copied into the result list. Only elements
+ - with duplicates are transferred as (N E) lists.
+ -
  - Example in Haskell:
  - P11> encodeModified "aaaabccaadeeee"
  - [Multiple 4 'a',Single 'b',Multiple 2 'c',
  -  Multiple 2 'a',Single 'd',Multiple 4 'e']
- - 
+ -
  -}
 
 data MultiOrSingle a = Single a | Multiple Int a
@@ -22,7 +24,7 @@ encodeModified :: Eq a => [a] -> [ MultiOrSingle a ]
 encodeModified xs = encode' (Problems1_10.pack xs)
             where
             encode' [] = []
-            encode' (x:xs) = if (length x) > 1
+            encode' (x:xs) = if length x > 1
                             then Multiple (length x) (head x) : encode' xs
                             else Single (head x) : encode' xs
 
@@ -36,11 +38,12 @@ problem11 = test [
 {-
  - Problem 12
  - Decode a run-length encoded list.
- - 
- - Given a run-length code list generated as specified in problem 11. Construct its uncompressed version.
- - 
+ -
+ - Given a run-length code list generated as specified in problem 11.
+ - Construct its uncompressed version.
+ -
  - Example in Haskell:
- - P12> decodeModified 
+ - P12> decodeModified
  -        [Multiple 4 'a',Single 'b',Multiple 2 'c',
  -         Multiple 2 'a',Single 'd',Multiple 4 'e']
  - "aaaabccaadeeee"
@@ -48,12 +51,12 @@ problem11 = test [
 
 decodeModified :: [MultiOrSingle a] -> [ a ]
 decodeModified [] = []
-decodeModified ((Multiple y x):xs) = (replicate y x) ++ decodeModified xs
-decodeModified ((Single x):xs) = x : decodeModified xs
+decodeModified (Multiple y x : xs) = replicate y x ++ decodeModified xs
+decodeModified (Single x : xs) = x : decodeModified xs
 
 problem12 = test [
             "Decode the same damned thing we did"
-            ~: "aaaabccaadeeee" 
+            ~: "aaaabccaadeeee"
             ~=? decodeModified [Multiple 4 'a',Single 'b',Multiple 2 'c',
                      Multiple 2 'a',Single 'd',Multiple 4 'e']
             ]
@@ -61,17 +64,17 @@ problem12 = test [
 {-
  - Problem 13
  - Run-length encoding of a list (direct solution).
- - 
+ -
  - Implement the so-called run-length encoding data compression method
  - directly. I.e. don't explicitly create the sublists containing the
  - duplicates, as in problem 9, but only count them. As in problem P11,
  - simplify the result list by replacing the singleton lists (1 X) by X.
- - 
+ -
  - Example in Haskell:
  - P13> encodeDirect "aaaabccaadeeee"
  - [Multiple 4 'a',Single 'b',Multiple 2 'c',
  -  Multiple 2 'a',Single 'd',Multiple 4 'e']
- - 
+ -
  -}
 
 encodeDirect :: Eq a => [a] -> [ MultiOrSingle a ]
@@ -96,7 +99,7 @@ problem13 = test [
 {-
  - Problem 14
  - Duplicate the elements of a list.
- - 
+ -
  - Example in Haskell:
  - > dupli [1, 2, 3]
  - [1,1,2,2,3,3]
@@ -112,33 +115,33 @@ problem14 = test [
             ~=? dupli [1,2,3]
             ]
 
-{- 
+{-
  - Problem 15
  - Replicate the elements of a list a given number of times.
- - 
+ -
  - Example in Haskell:
  - > repli "abc" 3
  - "aaabbbccc"
- - 
+ -
  -}
 
 repli :: [a] -> Int -> [a]
 repli [] _ = []
-repli (x:xs) y = (replicate y x) ++ repli xs y
+repli (x:xs) y = replicate y x ++ repli xs y
 
 problem15 = test [
             "Replicate the elements of a list x times"
                 ~: "aaabbbccc"
                 ~=? repli "abc" 3
                 ]
-{- 
+{-
  - Problem 16
  - Drop every N'th element from a list.
- - 
+ -
  - Example in Haskell:
  - *Main> dropEvery "abcdefghik" 3
  - "abdeghk"
- - 
+ -
  -}
 
 dropEvery :: [a] -> Int -> [a]
@@ -152,7 +155,7 @@ problem16 = test [
                 ~: "abdeghk"
                 ~=? dropEvery "abcdefghik" 3
                 ]
-{- 
+{-
  - Problem 17
  - Split a list into two parts; the length of the first part is given.
  - Do not use any predefined predicates.
@@ -160,43 +163,54 @@ problem16 = test [
  - Example in Haskell:
  - *Main> split "abcdefghik" 3
  - ("abc", "defghik")
- - 
+ -
  -}
-{- 
+
+split :: [a] -> Int -> ([a], [a])
+split x y = (take y x, drop y x)
+
+problem17 = test [
+            "Split a list into two parts with the " ++
+            "length of the first part given"
+            ~: ("abc", "defghik")
+            ~=? split "abcdefghik" 3
+            ]
+
+{-
  - Problem 18
- - Extract a slice from a list.
- - 
+ - Extract A Slice From a list.
+ -
  - Given two indices, i and k, the slice is the list containing the elements
  - between the i'th and k'th element of the original list (both limits
  - included). Start counting the elements with 1.
- - 
+ -
  - Example in Haskell:
- - *Main> slice ['a','b','c','d','e','f','g','h','i','k'] 3 7
+ - *Main> slice ['a','b','c','d','e','f','g','h','i','K'] 3 7
  - "cdefg"
- - 
+ -
  -}
-{- 
+{-
  - Problem 19
- - 
+ -
  - Rotate a list N places to the left.
  - Hint: Use the predefined functions length and (++).
- - 
+ -
  - Examples in Haskell:
  - *Main> rotate ['a','b','c','d','e','f','g','h'] 3
  - "defghabc"
  - *Main> rotate ['a','b','c','d','e','f','g','h'] (-2)
  - "ghabcdef"
- - 
+ -
  -}
-{- 
+{-
  - Problem 20
- - 
+ -
  - Remove the K'th element from a list.
- - 
+ -
  - Example in Haskell:
  - *Main> removeAt 1 "abcd"
  - ('b',"acd")
- - 
+ -
 -}
 
 tests11_20 = [TestLabel "Problem 11" problem11,
@@ -204,6 +218,6 @@ tests11_20 = [TestLabel "Problem 11" problem11,
                     TestLabel "Problem 13" problem13,
                     TestLabel "Problem 14" problem14,
                     TestLabel "Problem 15" problem15,
-                    TestLabel "Problem 15" problem16
+                    TestLabel "Problem 16" problem16,
+                    TestLabel "Problem 17" problem17
                     ]
-
