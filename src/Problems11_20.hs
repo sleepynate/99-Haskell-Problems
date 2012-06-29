@@ -167,7 +167,10 @@ problem16 = test [
  -}
 
 split :: [a] -> Int -> ([a], [a])
-split x y = (take y x, drop y x)
+-- split x y = (take y x, drop y x)
+split xs 0 = ([], xs)
+split (x:xs) y = let (elements,countdown) = split xs (y-1)
+                     in (x:elements, countdown)
 
 problem17 = test [
             "Split a list into two parts with the " ++
