@@ -190,8 +190,18 @@ problem17 = test [
  - Example in Haskell:
  - *Main> slice ['a','b','c','d','e','f','g','h','i','K'] 3 7
  - "cdefg"
- -
  -}
+
+slice :: [a] -> Int -> Int -> [a]
+slice xs i k = take (k-adj) $ drop adj xs
+               where adj = i-1
+
+problem18 = test [
+                 "Get a slice of list between index i and k, inclusive"
+                 ~: "cdefg"
+                 ~=? slice ['a','b','c','d','e','f','g','h','i','K'] 3 7
+                 ]
+
 {-
  - Problem 19
  -
@@ -222,5 +232,6 @@ tests11_20 = [TestLabel "Problem 11" problem11,
                     TestLabel "Problem 14" problem14,
                     TestLabel "Problem 15" problem15,
                     TestLabel "Problem 16" problem16,
-                    TestLabel "Problem 17" problem17
+                    TestLabel "Problem 17" problem17,
+                    TestLabel "Problem 18" problem18
                     ]
