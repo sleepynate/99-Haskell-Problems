@@ -215,6 +215,18 @@ problem18 = test [
  - "ghabcdef"
  -
  -}
+
+rotate :: [a] -> Int -> [a]
+rotate xs i = if i > 0
+              then drop i xs ++ take i xs
+              else drop (length xs + i) xs ++ take (length xs + i) xs
+
+problem19 = test [ "Rotate a list N places" ~: "defghabc"
+                   ~=? rotate ['a','b','c','d','e','f','g','h'] 3,
+                 "Rotate with a negative" ~: "ghabcdef"
+                 ~=? rotate ['a','b','c','d','e','f','g','h'] (-2)
+                 ]
+
 {-
  - Problem 20
  -
@@ -233,5 +245,6 @@ tests11_20 = [TestLabel "Problem 11" problem11,
                     TestLabel "Problem 15" problem15,
                     TestLabel "Problem 16" problem16,
                     TestLabel "Problem 17" problem17,
-                    TestLabel "Problem 18" problem18
+                    TestLabel "Problem 18" problem18,
+                    TestLabel "Problem 19" problem19
                     ]
