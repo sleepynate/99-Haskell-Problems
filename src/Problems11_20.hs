@@ -199,7 +199,7 @@ slice xs i k = take (k-adj) $ drop adj xs
 problem18 = test [
                  "Get a slice of list between index i and k, inclusive"
                  ~: "cdefg"
-                 ~=? slice ['a','b','c','d','e','f','g','h','i','K'] 3 7
+                 ~=? slice "abcdefghiK" 3 7
                  ]
 
 {-
@@ -222,9 +222,9 @@ rotate xs i = if i > 0
               else drop (length xs + i) xs ++ take (length xs + i) xs
 
 problem19 = test [ "Rotate a list N places" ~: "defghabc"
-                   ~=? rotate ['a','b','c','d','e','f','g','h'] 3,
+                   ~=? rotate "abcdefgh" 3,
                  "Rotate with a negative" ~: "ghabcdef"
-                 ~=? rotate ['a','b','c','d','e','f','g','h'] (-2)
+                 ~=? rotate "abcdefgh" (-2)
                  ]
 
 {-

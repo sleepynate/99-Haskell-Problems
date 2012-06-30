@@ -13,19 +13,19 @@ import Test.HUnit
  - 'z'
  -}
 
-myLast :: [a] -> a 
+myLast :: [a] -> a
 myLast (x:[]) = x
 myLast (x:xs) = myLast xs
 
 problem1 = test [
-        "last element of [1,2,3,4]" ~: 4 ~=? (myLast [1,2,3,4]),
-        "last element of ['x','y','z']" ~: 'z' ~=? (myLast "xyz")
+        "last element of [1,2,3,4]" ~: 4 ~=? myLast [1,2,3,4],
+        "last element of ['x','y','z']" ~: 'z' ~=? myLast "xyz"
         ]
 
 {-
  - Problem 2
  - Find the last but one element of a list.
- - 
+ -
  - Example in Haskell:
  - Prelude> myButLast [1,2,3,4]
  - 3
@@ -38,14 +38,14 @@ myButLast (y:z:[]) = y
 myButLast (y:zs)   = myButLast zs
 
 problem2 = test [
-        "second to last element of [1..4]" ~: 3 ~=? (myButLast [1..4]),
-        "second to last element of ['a'..'z']" ~: 'y' ~=? (myButLast "xyz")
+        "second to last element of [1..4]" ~: 3 ~=? myButLast [1..4],
+        "second to last element of ['a'..'z']" ~: 'y' ~=? myButLast "xyz"
         ]
-                        
+
 {-
  - Problem 3
  - Find the K'th element of a list. The first element in the list is number 1.
- - 
+ -
  - Example in Haskell:
  - Prelude> elementAt [1,2,3] 2
  - 2
@@ -59,16 +59,16 @@ elementAt series index = if index == 1
         else elementAt (tail series) (index - 1)
 
 problem3 = test [
-        "second element of [1,2,3]" ~: 2 ~=? (elementAt [1,2,3] 2)
-        , "fifth element of \"haskell\"" ~: 'e' ~=? (elementAt "haskell" 5)
+        "second element of [1,2,3]" ~: 2 ~=? elementAt [1,2,3] 2
+        , "fifth element of \"haskell\"" ~: 'e' ~=? elementAt "haskell" 5
         ]
 
-{- 
+{-
  - Problem 4
  - Find the number of elements of a list.
- - 
+ -
  - Example in Haskell:
- - 
+ -
  - Prelude> myLength [123, 456, 789]
  - 3
  - Prelude> myLength "Hello, world!"
@@ -76,19 +76,19 @@ problem3 = test [
  -}
 
 myLength :: [a] -> Int
-myLength x = myLength' 0 x
+myLength = myLength' 0
         where
             myLength' i (x:xs) = myLength' (i + 1) xs
             myLength' i _      = i
 
 problem4 = test [
-        "length of [123,456,789] is 3" ~: 3 ~=? (myLength [123,456,789]),
-        "length of \"Hello, world!\" is 13" ~: 13 ~=? (myLength "Hello. world!")
+        "length of [123,456,789] is 3" ~: 3 ~=? myLength [123, 456, 789],
+        "length of \"Hello, world!\" is 13" ~: 13 ~=? myLength "Hello. world!"
         ]
 
 {- Problem 5
  - Reverse a list.
- - 
+ -
  - Example in Haskell:
  - Prelude> reverse "A man, a plan, a canal, panama!"
  - "!amanap ,lanac a ,nalp a ,nam A"
@@ -98,22 +98,22 @@ problem4 = test [
 
 myreverse :: [a] -> [a]
 myreverse [] = []
-myreverse (x:xs) = (myreverse xs) ++ [ x ]
+myreverse (x:xs) = myreverse xs ++ [ x ]
 
 problem5 = test [
         "reverse a string"
             ~: "!amanap ,lanac a ,nalp a ,nam A"
-            ~=? (myreverse "A man, a plan, a canal, panama!"),
+            ~=? myreverse "A man, a plan, a canal, panama!",
         "reverse a list of number"
             ~: [4,3,2,1]
-            ~=? (myreverse [1,2,3,4])
+            ~=? myreverse [1,2,3,4]
         ]
 
-{- 
+{-
  - Problem 6
  - Find out whether a list is a palindrome. A palindrome can be read
  - forward or backward; e.g. (x a m a x).
- - 
+ -
  - Example in Haskell:
  - *Main> isPalindrome [1,2,3]
  - False
@@ -123,26 +123,26 @@ problem5 = test [
  - True
  -}
 isPalindrome :: Eq a => [a] -> Bool
-isPalindrome (x:xs) = if (length xs <= 1) then True
-                    else (x == last xs) && (isPalindrome (init xs))
+isPalindrome (x:xs) = (length xs <= 1)
+                      || ((x == last xs) && isPalindrome (init xs))
 
 problem6 = test [
         "check a list"
-            ~: False ~=? (isPalindrome [1,2,3])
+            ~: False ~=? isPalindrome [1,2,3]
         , "check a string"
-            ~: True ~=? (isPalindrome "madamimadam")
+            ~: True ~=? isPalindrome "madamimadam"
         , "check a longer list"
-            ~: True ~=? (isPalindrome [1,2,4,8,16,8,4,2,1])
-        ] 
-{- 
+            ~: True ~=? isPalindrome [1,2,4,8,16,8,4,2,1]
+        ]
+{-
  - Problem 7
  - Flatten a nested list structure.
- - 
+ -
  - Transform a list, possibly holding lists as elements into a `flat'
  - list by replacing each list with its elements (recursively).
- - 
+ -
  - Example in Haskell:
- - 
+ -
  - *Main> flatten (Elem 5)
  - [5]
  - *Main> flatten (List [Elem 1, List [Elem 2, List [Elem 3, Elem 4], Elem 5]])
@@ -165,14 +165,14 @@ problem7 = test [
         -- , "flattening empty list is empty list"
         --     ~: [] ~=? myflatten (List [])
         ]
-{- 
+{-
  - Problem 8
  - Eliminate consecutive duplicates of list elements.
  - If a list contains repeated elements they should be replaced with a single
  - copy of the element. The order of the elements should not be changed.
- - 
+ -
  - Example in Haskell:
- - 
+ -
  - > compress ["a","a","a","a","b","c","c","a","a","d","e","e","e","e"]
  - ["a","b","c","a","d","e"]
  -}
@@ -180,39 +180,39 @@ compress :: Eq a => [a] -> [a]
 compress (x:[]) = [x]
 compress (x:xs) = if x == head xs
                 then compress xs
-                else x:(compress xs)
+                else x:compress xs
 
 problem8 = test [
         "remove duplicates from an iterable container"
         ~: ["a","b","c","a","d","e"] ~=? compress ["a","a","a","a","b","c","c","a","a","d","e","e","e","e"]
         ]
- 
+
 {- Problem 9
  - Pack consecutive duplicates of list elements into sublists. If a list
  - contains repeated elements they should be placed in separate sublists.
- - 
+ -
  - Example in Haskell:
- - *Main> pack ['a', 'a', 'a', 'a', 'b', 'c', 'c', 'a', 
+ - *Main> pack ['a', 'a', 'a', 'a', 'b', 'c', 'c', 'a',
  -              'a', 'd', 'e', 'e', 'e', 'e']
  - ["aaaa","b","cc","aa","d","eeee"]
  -}
 
 pack :: Eq a => [a] -> [[a]]
 pack [] = []
-pack (x:xs) = ([x] ++ takeWhile (== x) xs) : pack (dropWhile (== x) xs)
+pack (x:xs) = (x : takeWhile (== x) xs) : pack (dropWhile (== x) xs)
 
 problem9 = test [
         "pack conecutive duplicates of list elements into sublists"
         ~: ["aaaa","b","cc","aa","d","eeee"]
-        ~=? pack ['a', 'a', 'a', 'a', 'b', 'c', 'c', 'a', 'a', 'd', 'e', 'e', 'e', 'e']
+        ~=? pack "aaaabccaadeeee"
         ]
- 
+
 {- Problem 10
  - Run-length encoding of a list. Use the result of problem P09 to implement
  - the so-called run-length encoding data compression method. Consecutive
  - duplicates of elements are encoded as lists (N E) where N is the number of
  - duplicates of the element E.
- - 
+ -
  - Example in Haskell:
  - encode "aaaabccaadeeee"
  - [(4,'a'),(1,'b'),(2,'c'),(2,'a'),(1,'d'),(4,'e')]
@@ -222,8 +222,11 @@ encode :: Eq a => [a] -> [(Int, a)]
 encode [] = []
 encode xs = encode' (pack xs)
         where
-        encode' [] = []
-        encode' (x:xs) = ((length x), (head x)) : encode' xs
+--        encode' [] = []
+--        encode' (x:xs) = ((length x), (head x)) : encode' xs
+          encode' = map (\x -> (length x, head x))
+-- hslint wants to see:
+--        encode' = length Control.Arrow.&&& head
 
 problem10 = test [
         "run-length encode a list of duplicates"
