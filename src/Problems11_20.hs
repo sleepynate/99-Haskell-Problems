@@ -238,6 +238,13 @@ problem19 = test [ "Rotate a list N places" ~: "defghabc"
  -
 -}
 
+removeAt :: Int -> [a] -> (a, [a])
+removeAt k xs = (xs !! k, take k xs ++ drop (k + 1) xs)
+
+problem20 = test [ "Remove the K'th element from a list"
+                   ~: removeAt 1 "abcd" ~=? ('b', "acd")
+                   ]
+
 tests11_20 = [TestLabel "Problem 11" problem11,
                     TestLabel "Problem 12" problem12,
                     TestLabel "Problem 13" problem13,
@@ -246,5 +253,6 @@ tests11_20 = [TestLabel "Problem 11" problem11,
                     TestLabel "Problem 16" problem16,
                     TestLabel "Problem 17" problem17,
                     TestLabel "Problem 18" problem18,
-                    TestLabel "Problem 19" problem19
+                    TestLabel "Problem 19" problem19,
+                    TestLabel "Problem 20" problem20
                     ]
