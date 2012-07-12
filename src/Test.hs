@@ -3,10 +3,13 @@ module Main where
 import Test.HUnit
 import qualified Problems1_10
 import qualified Problems11_20
+import qualified Problems21_30
 
 import System.Exit
 
-tests = TestList (Problems1_10.tests1_10 ++ Problems11_20.tests11_20)
+tests = TestList (Problems1_10.tests1_10
+                  ++ Problems11_20.tests11_20
+                  ++ Problems21_30.tests21_30)
 
 main::IO()
 main = do
