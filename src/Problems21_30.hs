@@ -67,6 +67,13 @@ problem23 = test ["Extract given number of randomly selected elements from list"
  - [23,1,17,33,21,37]
  -}
 
+diff_select :: Int -> Int -> [Int]
+diff_select n r = pure_rnd_select [1..r] n
+
+
+problem24 = test ["Draw N different random number from the set 1..M"
+                  ~: (length $ diff_select 6 49)
+				  ~=? 6 ]
 {-
  - Problem 25
  - Generate a random permutation of the elements of a list.
@@ -138,4 +145,5 @@ problem23 = test ["Extract given number of randomly selected elements from list"
 
 tests21_30 = [TestLabel "Problem 21" problem21,
               TestLabel "Problem 22" problem22,
-              TestLabel "Problem 23" problem23]
+              TestLabel "Problem 23" problem23,
+			  TestLabel "Problem 24" problem24]
