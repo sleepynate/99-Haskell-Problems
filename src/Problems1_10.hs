@@ -15,12 +15,13 @@ import Test.HUnit
 
 myLast :: [a] -> a
 myLast (x:[]) = x
-myLast (x:xs) = myLast xs
+myLast (_:xs) = myLast xs
 
+problem1 :: Test
 problem1 = test [
         "last element of [1,2,3,4]" ~: 4 ~=? myLast [1,2,3,4],
         "last element of ['x','y','z']" ~: 'z' ~=? myLast "xyz"
-        ]
+		]
 
 {-
  - Problem 2
@@ -34,9 +35,10 @@ problem1 = test [
  -}
 
 myButLast :: [a] -> a
-myButLast (y:z:[]) = y
-myButLast (y:zs)   = myButLast zs
+myButLast (y:_:[]) = y
+myButLast (_:zs)   = myButLast zs
 
+problem2 :: Test
 problem2 = test [
         "second to last element of [1..4]" ~: 3 ~=? myButLast [1..4],
         "second to last element of ['a'..'z']" ~: 'y' ~=? myButLast "xyz"
@@ -58,6 +60,7 @@ elementAt series index = if index == 1
         then head series
         else elementAt (tail series) (index - 1)
 
+problem3 :: Test
 problem3 = test [
         "second element of [1,2,3]" ~: 2 ~=? elementAt [1,2,3] 2
         , "fifth element of \"haskell\"" ~: 'e' ~=? elementAt "haskell" 5
@@ -78,9 +81,10 @@ problem3 = test [
 myLength :: [a] -> Int
 myLength = myLength' 0
         where
-            myLength' i (x:xs) = myLength' (i + 1) xs
+            myLength' i (_:xs) = myLength' (i + 1) xs
             myLength' i _      = i
 
+problem4 :: Test
 problem4 = test [
         "length of [123,456,789] is 3" ~: 3 ~=? myLength [123, 456, 789],
         "length of \"Hello, world!\" is 13" ~: 13 ~=? myLength "Hello. world!"
@@ -100,6 +104,7 @@ myreverse :: [a] -> [a]
 myreverse [] = []
 myreverse (x:xs) = myreverse xs ++ [ x ]
 
+problem5 :: Test
 problem5 = test [
         "reverse a string"
             ~: "!amanap ,lanac a ,nalp a ,nam A"
@@ -126,6 +131,7 @@ isPalindrome :: Eq a => [a] -> Bool
 isPalindrome (x:xs) = (length xs <= 1)
                       || ((x == last xs) && isPalindrome (init xs))
 
+problem6 :: Test
 problem6 = test [
         "check a list"
             ~: False ~=? isPalindrome [1,2,3]
@@ -157,6 +163,7 @@ myflatten (Elem x) = [x]
 myflatten (List (x:xs)) = myflatten x ++ myflatten (List xs)
 myflatten (List []) = []
 
+problem7 :: Test
 problem7 = test [
         "flatten a 1-element list"
             ~: [5] ~=? myflatten (Elem 5)
@@ -182,6 +189,7 @@ compress (x:xs) = if x == head xs
                 then compress xs
                 else x:compress xs
 
+problem8 :: Test
 problem8 = test [
         "remove duplicates from an iterable container"
         ~: ["a","b","c","a","d","e"] ~=? compress ["a","a","a","a","b","c","c","a","a","d","e","e","e","e"]
@@ -201,6 +209,7 @@ pack :: Eq a => [a] -> [[a]]
 pack [] = []
 pack (x:xs) = (x : takeWhile (== x) xs) : pack (dropWhile (== x) xs)
 
+problem9 :: Test
 problem9 = test [
         "pack conecutive duplicates of list elements into sublists"
         ~: ["aaaa","b","cc","aa","d","eeee"]
@@ -228,12 +237,14 @@ encode xs = encode' (pack xs)
 -- hslint wants to see:
 --        encode' = length Control.Arrow.&&& head
 
+problem10 :: Test
 problem10 = test [
         "run-length encode a list of duplicates"
         ~: [(4,'a'),(1,'b'),(2,'c'),(2,'a'),(1,'d'),(4,'e')]
         ~=? encode "aaaabccaadeeee"
         ]
 
+tests1_10 :: [Test]
 tests1_10 = [TestLabel "Problem 1" problem1,
                   TestLabel "Problem 2" problem2,
                   TestLabel "Problem 3" problem3,

@@ -17,6 +17,7 @@ insertAt :: a -> [a] -> Int -> [a]
 insertAt x xs n = take i xs ++ x : drop i xs
                   where i = n - 1
 
+problem21 :: Test
 problem21 = test ["Insert an element at a given position into a list."
                  ~: insertAt 'X' "abcd" 2
                  ~=? "aXbcd"]
@@ -34,6 +35,7 @@ range a b = if a == b
             then [b]
             else a : (range (a + 1) b)
 
+problem22 :: Test
 problem22 = test [ "Create a list containing all integers in a given range."
                  ~: range 4 9
                  ~=? [4,5,6,7,8,9]]
@@ -56,6 +58,7 @@ rnd_select l n = do r <- randomRIO (0, (length l) - 1)
                     result <- (rnd_select ((take r l) ++ (drop (r+1) l)) (n - 1))
                     return ((l!!r) : result)
 
+problem23 :: Test
 problem23 = test ["Extract given number of randomly selected elements from list"
                   ~: (length $ (pure_rnd_select "abcdefgh" 3))
                   ~=? 3 ]
@@ -71,6 +74,7 @@ problem23 = test ["Extract given number of randomly selected elements from list"
 diff_select :: Int -> Int -> [Int]
 diff_select n r = pure_rnd_select [1..r] n
 
+problem24 :: Test
 problem24 = test ["Draw N different random number from the set 1..M"
                   ~: (length $ diff_select 6 49)
 				  ~=? 6 ]
@@ -87,6 +91,7 @@ rnd_permu [] = []
 rnd_permu xs = x : rnd_permu (delete x xs)
                where x = head (pure_rnd_select xs 1)
 
+problem25 :: Test
 problem25 = test ["Generate a random permutation of the elements of a list."
                   ~: length (rnd_permu "abcdef")
 				  ~=? length "abcdef" ]
@@ -153,6 +158,7 @@ problem25 = test ["Generate a random permutation of the elements of a list."
  -
  -}
 
+tests21_30 :: [Test]
 tests21_30 = [TestLabel "Problem 21" problem21,
               TestLabel "Problem 22" problem22,
               TestLabel "Problem 23" problem23,
