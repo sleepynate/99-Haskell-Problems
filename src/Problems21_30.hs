@@ -1,5 +1,6 @@
 module Problems21_30 where
 
+import Data.List
 import Test.HUnit
 import System.Random
 import System.IO.Unsafe
@@ -70,7 +71,6 @@ problem23 = test ["Extract given number of randomly selected elements from list"
 diff_select :: Int -> Int -> [Int]
 diff_select n r = pure_rnd_select [1..r] n
 
-
 problem24 = test ["Draw N different random number from the set 1..M"
                   ~: (length $ diff_select 6 49)
 				  ~=? 6 ]
@@ -81,6 +81,16 @@ problem24 = test ["Draw N different random number from the set 1..M"
  - Prelude>rnd_permu "abcdef"
  - Prelude>"badcef"
  -}
+
+rnd_permu :: Eq a => [a] -> [a]
+rnd_permu [] = []
+rnd_permu xs = x : rnd_permu (delete x xs)
+               where x = head (pure_rnd_select xs 1)
+
+problem25 = test ["Generate a random permutation of the elements of a list."
+                  ~: length (rnd_permu "abcdef")
+				  ~=? length "abcdef" ]
+
 
 {-
  - Problem 26
@@ -146,4 +156,5 @@ problem24 = test ["Draw N different random number from the set 1..M"
 tests21_30 = [TestLabel "Problem 21" problem21,
               TestLabel "Problem 22" problem22,
               TestLabel "Problem 23" problem23,
-			  TestLabel "Problem 24" problem24]
+			  TestLabel "Problem 24" problem24,
+			  TestLabel "Problem 25" problem25]
