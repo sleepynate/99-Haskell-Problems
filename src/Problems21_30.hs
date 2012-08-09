@@ -77,7 +77,7 @@ diff_select n r = pure_rnd_select [1..r] n
 problem24 :: Test
 problem24 = test ["Draw N different random number from the set 1..M"
                   ~: (length $ diff_select 6 49)
-				  ~=? 6 ]
+                                  ~=? 6 ]
 {-
  - Problem 25
  - Generate a random permutation of the elements of a list.
@@ -94,13 +94,13 @@ rnd_permu xs = x : rnd_permu (delete x xs)
 problem25 :: Test
 problem25 = test ["Generate a random permutation of the elements of a list."
                   ~: length (rnd_permu "abcdef")
-				  ~=? length "abcdef" ]
+                                  ~=? length "abcdef" ]
 
 
 {-
  - Problem 26
  - (**) Generate the combinations of K distinct objects chosen from
- -the  N elements of a list
+ - the N elements of a list
  - In how many ways can a committee of 3 be chosen from a group of 12
  - people? We all know that there are C(12,3) = 220 possibilities
  - (C(N,K) denotes the well-known binomial coefficients). For pure
@@ -162,5 +162,5 @@ tests21_30 :: [Test]
 tests21_30 = [TestLabel "Problem 21" problem21,
               TestLabel "Problem 22" problem22,
               TestLabel "Problem 23" problem23,
-			  TestLabel "Problem 24" problem24,
-			  TestLabel "Problem 25" problem25]
+                          TestLabel "Problem 24" problem24,
+                          TestLabel "Problem 25" problem25]

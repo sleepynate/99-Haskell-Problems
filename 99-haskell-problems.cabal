@@ -22,4 +22,7 @@ Test-Suite test-foo
     type:       exitcode-stdio-1.0
     hs-source-dirs:  src
     main-is:    Test.hs
-    build-depends: base, HUnit, random, transformers
+    build-depends: 
+                   base,
+                   random,
+                   HUnit
