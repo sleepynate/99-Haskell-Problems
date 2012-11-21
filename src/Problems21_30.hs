@@ -33,7 +33,7 @@ problem21 = test ["Insert an element at a given position into a list."
 range :: Int -> Int -> [Int]
 range a b = if a == b
             then [b]
-            else a : (range (a + 1) b)
+            else a : range (a + 1) b
 
 problem22 :: Test
 problem22 = test [ "Create a list containing all integers in a given range."
@@ -44,57 +44,57 @@ problem22 = test [ "Create a list containing all integers in a given range."
  - Problem 23
  - Extract a given number of randomly selected elements from a list.
  - Example:
- - Prelude System.Random>rnd_select "abcdefgh" 3 >>= show
+ - Prelude System.Random>rndSelect "abcdefgh" 3 >>= show
  - "eda"
  -}
 
-pure_rnd_select :: [a] -> Int -> [a]
-pure_rnd_select x y = unsafePerformIO $ rnd_select x y
+pureRndSelect :: [a] -> Int -> [a]
+pureRndSelect x y = unsafePerformIO $ rndSelect x y
 
-rnd_select :: [a] -> Int -> IO [a]
-rnd_select _  0 = return []
-rnd_select [] _ = return []
-rnd_select l n = do r <- randomRIO (0, (length l) - 1)
-                    result <- (rnd_select ((take r l) ++ (drop (r+1) l)) (n - 1))
-                    return ((l!!r) : result)
+rndSelect :: [a] -> Int -> IO [a]
+rndSelect _  0 = return []
+rndSelect [] _ = return []
+rndSelect l n = do r <- randomRIO (0, length l - 1)
+                   result <- rndSelect (take r l ++ drop (r+1) l) (n - 1)
+                   return ((l!!r) : result)
 
 problem23 :: Test
 problem23 = test ["Extract given number of randomly selected elements from list"
-                  ~: (length $ (pure_rnd_select "abcdefgh" 3))
+                  ~: length (pureRndSelect "abcdefgh" 3)
                   ~=? 3 ]
 
 {-
  - Problem 24
  - Lotto: Draw N different random numbers from the set 1..M.
  - Example:
- - Prelude System.Random>diff_select 6 49
+ - Prelude System.Random>diffSelect 6 49
  - [23,1,17,33,21,37]
  -}
 
-diff_select :: Int -> Int -> [Int]
-diff_select n r = pure_rnd_select [1..r] n
+diffSelect :: Int -> Int -> [Int]
+diffSelect n r = pureRndSelect [1..r] n
 
 problem24 :: Test
 problem24 = test ["Draw N different random number from the set 1..M"
-                  ~: (length $ diff_select 6 49)
-                                  ~=? 6 ]
+                  ~: length (diffSelect 6 49)
+                  ~=? 6 ]
 {-
  - Problem 25
  - Generate a random permutation of the elements of a list.
  - Example:
- - Prelude>rnd_permu "abcdef"
+ - Prelude>rndPermu "abcdef"
  - Prelude>"badcef"
  -}
 
-rnd_permu :: Eq a => [a] -> [a]
-rnd_permu [] = []
-rnd_permu xs = x : rnd_permu (delete x xs)
-               where x = head (pure_rnd_select xs 1)
+rndPermu :: Eq a => [a] -> [a]
+rndPermu [] = []
+rndPermu xs = x : rndPermu (delete x xs)
+               where x = head (pureRndSelect xs 1)
 
 problem25 :: Test
 problem25 = test ["Generate a random permutation of the elements of a list."
-                  ~: length (rnd_permu "abcdef")
-                                  ~=? length "abcdef" ]
+                  ~: length (rndPermu "abcdef")
+                  ~=? length "abcdef" ]
 
 
 {-
@@ -111,6 +111,38 @@ problem25 = test ["Generate a random permutation of the elements of a list."
  - > combinations 3 "abcdef"
  - ["abc","abd","abe",...]
  -}
+combinations :: (Eq a) => Int -> [a] -> [[a]]
+combinations _ [] = []
+combinations 0 _  = []
+combinations n (y:ys) = if n > 1 
+                        then map ((:) y) (combinations (n - 1) ys) ++ combinations n ys
+                        else group (y : ys)
+
+problem26 :: Test
+problem26 = test [ "combinations of 0 out of '' "
+                   ~:  0 
+                   ~=? length (combinations 0 ""),
+
+                   "combinations of 1 out of 'a' "
+                   ~:  ["a"]
+                   ~=? combinations 1 "a",
+
+                   "combinations of 1 out of 'ab' "
+                   ~:  ["a", "b"]
+                   ~=? combinations 1 "ab",
+
+                   "combinations of 2 out of 'ab' "
+                   ~:  ["ab"]
+                   ~=? combinations 2 "ab",
+
+                   "combinations of 2 out of 'abc' "
+                   ~: sort ["ab", "bc", "ac"]
+                   ~=? sort (combinations 2 "abc"),
+
+                   "Generate the combinations of K distinct objects chosen from N elements"
+                   ~: 220 
+                   ~=? length (combinations 3 "abcdefghijkl")
+                   ]
 
 {-
  - Problem 27
@@ -162,5 +194,6 @@ tests21_30 :: [Test]
 tests21_30 = [TestLabel "Problem 21" problem21,
               TestLabel "Problem 22" problem22,
               TestLabel "Problem 23" problem23,
-                          TestLabel "Problem 24" problem24,
-                          TestLabel "Problem 25" problem25]
+              TestLabel "Problem 24" problem24,
+              TestLabel "Problem 25" problem25,
+              TestLabel "Problem 26" problem26]
