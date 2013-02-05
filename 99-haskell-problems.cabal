@@ -3,7 +3,7 @@ version:        0.1
 cabal-version:  >= 1.9.2
 author:         Nathan Dotz
 copyright:      2011 Nathan Dotz
-license:        BSD
+license:        BSD3
 homepage:       http://sleepynate.com
 synopsis:       99 Haskell Problems
 description:    
@@ -19,10 +19,13 @@ executable 99-haskell-problems
   build-depends:   base
 
 Test-Suite test-foo
-    type:       exitcode-stdio-1.0
-    hs-source-dirs:  src
-    main-is:    Test.hs
-    build-depends: 
-                   base,
-                   random,
-                   HUnit
+    type:           exitcode-stdio-1.0
+    hs-source-dirs: test, src
+    main-is:        Test.hs
+    build-depends:  base,
+                    random,
+                    HUnit,
+                    QuickCheck,
+                    test-framework,
+                    test-framework-hunit,
+                    test-framework-quickcheck2
