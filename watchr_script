@@ -1,0 +1,22 @@
+require 'colorize'
+
+watch( 'src/.*\.hs' ) do |x|
+  result = system("cabal build")
+  if result
+    puts "built... running tests"
+    result = system("cabal test")
+    if result
+      puts ('*'*76).white.on_green
+      puts ('*'*36+'PASS'+'*'*36).white.on_green
+      puts ('*'*76).white.on_green
+    else
+      puts ('!'*76).black.on_red
+      puts ('!'*36+'FAIL'+'!'*36).black.on_red
+      puts ('!'*76).black.on_red
+      puts $?
+    end
+  else
+    puts "build failed!"
+  end
+
+end
