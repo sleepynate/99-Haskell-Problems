@@ -21,9 +21,10 @@ myLast :: [a] -> a
 myLast (x:[]) = x
 myLast (_:xs) = myLast xs
 
+problem1 :: Test.Framework.Test
 problem1 = testGroup "problem 1" [
-           testCase "the last element [1,2,3,4]" (4 @?= myLast [1,2,3,4]),
-		   testCase "last element of ['x','y','z']" ('z' @?= myLast "xyz")
+           testCase "the last element [1,2,3,4]" $ 4 @?= myLast [1,2,3,4],
+		   testCase "last element of ['x','y','z']" $ 'z' @?= myLast "xyz"
            ]
 
 {-
@@ -41,10 +42,10 @@ myButLast :: [a] -> a
 myButLast (y:_:[]) = y
 myButLast (_:zs)   = myButLast zs
 
-problem2 :: HUnit.Test
-problem2 = test [
-           "second to last element of [1..4]" ~: 3 ~=? myButLast [1..4],
-           "second to last element of ['a'..'z']" ~: 'y' ~=? myButLast "xyz"
+problem2 :: Test.Framework.Test
+problem2 = testGroup "problem 2" [
+           testCase "second to last element of [1..4]" $ 3 @?= myButLast [1..4],
+           testCase "second to last element of ['a'..'z']" $ 'y' @?= myButLast "xyz"
            ]
 
 {-
@@ -248,8 +249,7 @@ problem10 = test [
         ]
 
 -- tests1_10 :: [Test]
-tests1_10 = problem1 : 
-            hUnitTestToTests problem2
+tests1_10 = [ problem1, problem2 ]
             ++ hUnitTestToTests problem3
             ++ hUnitTestToTests problem4
             ++ hUnitTestToTests problem5
