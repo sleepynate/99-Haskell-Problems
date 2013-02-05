@@ -14,6 +14,7 @@ watch( 'src/.*\.hs' ) do |x|
       puts ('!'*36+'FAIL'+'!'*36).black.on_red
       puts ('!'*76).black.on_red
       puts $?
+      system("cat dist/test/99haskellproblems-0.1-test-foo.log")
     end
   else
     puts "build failed!"
