@@ -23,8 +23,8 @@ myLast (_:xs) = myLast xs
 
 problem1 :: Test.Framework.Test
 problem1 = testGroup "problem 1" [
-           testCase "the last element [1,2,3,4]" $ 4 @?= myLast [1,2,3,4],
-		   testCase "last element of ['x','y','z']" $ 'z' @?= myLast "xyz"
+           testCase "the last element [1,2,3,4]"    $ 4   @?= myLast [1,2,3,4],
+	   testCase "last element of ['x','y','z']" $ 'z' @?= myLast "xyz"
            ]
 
 {-
@@ -44,7 +44,7 @@ myButLast (_:zs)   = myButLast zs
 
 problem2 :: Test.Framework.Test
 problem2 = testGroup "problem 2" [
-           testCase "second to last element of [1..4]" $ 3 @?= myButLast [1..4],
+           testCase "second to last element of [1..4]"     $ 3   @?= myButLast [1..4],
            testCase "second to last element of ['a'..'z']" $ 'y' @?= myButLast "xyz"
            ]
 
@@ -64,10 +64,10 @@ elementAt series index = if index == 1
         then head series
         else elementAt (tail series) (index - 1)
 
-problem3 :: HUnit.Test
-problem3 = test [
-        "second element of [1,2,3]" ~: 2 ~=? elementAt [1,2,3] 2
-        , "fifth element of \"haskell\"" ~: 'e' ~=? elementAt "haskell" 5
+problem3 :: Test.Framework.Test
+problem3 = testGroup "problem 3" [
+          testCase "second element of [1,2,3]"    $ 2   @?= elementAt [1,2,3] 2
+        , testCase "fifth element of \"haskell\"" $ 'e' @?= elementAt "haskell" 5
         ]
 
 {-
@@ -88,10 +88,10 @@ myLength = myLength' 0
             myLength' i (_:xs) = myLength' (i + 1) xs
             myLength' i _      = i
 
-problem4 :: HUnit.Test
-problem4 = test [
-        "length of [123,456,789] is 3" ~: 3 ~=? myLength [123, 456, 789],
-        "length of \"Hello, world!\" is 13" ~: 13 ~=? myLength "Hello. world!"
+problem4 :: Test.Framework.Test
+problem4 = testGroup "problem 4" [
+        testCase "length of [123,456,789] is 3"      $ 3  @?= myLength [123, 456, 789],
+        testCase "length of \"Hello, world!\" is 13" $ 13 @?= myLength "Hello. world!"
         ]
 
 {- Problem 5
@@ -249,9 +249,7 @@ problem10 = test [
         ]
 
 -- tests1_10 :: [Test]
-tests1_10 = [ problem1, problem2 ]
-            ++ hUnitTestToTests problem3
-            ++ hUnitTestToTests problem4
+tests1_10 = [ problem1, problem2, problem3, problem4 ]
             ++ hUnitTestToTests problem5
             ++ hUnitTestToTests problem6
             ++ hUnitTestToTests problem7
