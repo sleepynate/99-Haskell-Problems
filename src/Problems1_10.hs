@@ -108,14 +108,10 @@ myreverse :: [a] -> [a]
 myreverse [] = []
 myreverse (x:xs) = myreverse xs ++ [ x ]
 
-problem5 :: HUnit.Test
-problem5 = test [
-        "reverse a string"
-            ~: "!amanap ,lanac a ,nalp a ,nam A"
-            ~=? myreverse "A man, a plan, a canal, panama!",
-        "reverse a list of number"
-            ~: [4,3,2,1]
-            ~=? myreverse [1,2,3,4]
+problem5 :: Test.Framework.Test
+problem5 = testGroup "problem 5" [
+        testCase "reverse a string" $ "!amanap ,lanac a ,nalp a ,nam A" @?= myreverse "A man, a plan, a canal, panama!",
+        testCase "reverse a list of number" $ [4,3,2,1] @?= myreverse [1,2,3,4]
         ]
 
 {-
@@ -135,14 +131,11 @@ isPalindrome :: Eq a => [a] -> Bool
 isPalindrome (x:xs) = (length xs <= 1)
                       || ((x == last xs) && isPalindrome (init xs))
 
-problem6 :: HUnit.Test
-problem6 = test [
-        "check a list"
-            ~: False ~=? isPalindrome [1,2,3]
-        , "check a string"
-            ~: True ~=? isPalindrome "madamimadam"
-        , "check a longer list"
-            ~: True ~=? isPalindrome [1,2,4,8,16,8,4,2,1]
+problem6 :: Test.Framework.Test
+problem6 = testGroup "problem 6" [
+        testCase "check a list" $ False @?= isPalindrome [1,2,3]
+        , testCase "check a string" $ True @?= isPalindrome "madamimadam"
+        , testCase "check a longer list" $ True @?= isPalindrome [1,2,4,8,16,8,4,2,1]
         ]
 {-
  - Problem 7
@@ -167,14 +160,11 @@ myflatten (Elem x) = [x]
 myflatten (List (x:xs)) = myflatten x ++ myflatten (List xs)
 myflatten (List []) = []
 
-problem7 :: HUnit.Test
-problem7 = test [
-        "flatten a 1-element list"
-            ~: [5] ~=? myflatten (Elem 5)
-        , "flatten a multi-depth list"
-            ~: [1,2,3,4,5] ~=? myflatten (List [Elem 1, List [Elem 2, List [Elem 3, Elem 4], Elem 5]])
-        , "flattening empty list is empty list"
-            ~: ([]::[Int]) ~=? myflatten (List [])
+problem7 :: Test.Framework.Test
+problem7 = testGroup "problem 7" [
+        testCase "flatten a 1-element list" $ [5] @?= myflatten (Elem 5)
+        , testCase "flatten a multi-depth list" $ [1,2,3,4,5] @?= myflatten (List [Elem 1, List [Elem 2, List [Elem 3, Elem 4], Elem 5]])
+        , testCase "flattening empty list is empty list" $ ([]::[Int]) @?= myflatten (List [])
         ]
 {-
  - Problem 8
@@ -193,10 +183,9 @@ compress (x:xs) = if x == head xs
                 then compress xs
                 else x:compress xs
 
-problem8 :: HUnit.Test
-problem8 = test [
-        "remove duplicates from an iterable container"
-        ~: ["a","b","c","a","d","e"] ~=? compress ["a","a","a","a","b","c","c","a","a","d","e","e","e","e"]
+problem8 :: Test.Framework.Test
+problem8 = testGroup "problem 8" [
+        testCase "remove duplicates from an iterable container" $ ["a","b","c","a","d","e"] @?= compress ["a","a","a","a","b","c","c","a","a","d","e","e","e","e"]
         ]
 
 {- Problem 9
@@ -213,11 +202,9 @@ pack :: Eq a => [a] -> [[a]]
 pack [] = []
 pack (x:xs) = (x : takeWhile (== x) xs) : pack (dropWhile (== x) xs)
 
-problem9 :: HUnit.Test
-problem9 = test [
-        "pack conecutive duplicates of list elements into sublists"
-        ~: ["aaaa","b","cc","aa","d","eeee"]
-        ~=? pack "aaaabccaadeeee"
+problem9 :: Test.Framework.Test
+problem9 = testGroup "problem 9" [
+        testCase "pack conecutive duplicates of list elements into sublists" $ ["aaaa","b","cc","aa","d","eeee"] @?= pack "aaaabccaadeeee"
         ]
 
 {- Problem 10
@@ -241,18 +228,10 @@ encode xs = encode' (pack xs)
 -- hslint wants to see:
 --        encode' = length Control.Arrow.&&& head
 
-problem10 :: HUnit.Test
-problem10 = test [
-        "run-length encode a list of duplicates"
-        ~: [(4,'a'),(1,'b'),(2,'c'),(2,'a'),(1,'d'),(4,'e')]
-        ~=? encode "aaaabccaadeeee"
+problem10 :: Test.Framework.Test
+problem10 = testGroup "problem 10" [
+        testCase "run-length encode a list of duplicates" $ [(4,'a'),(1,'b'),(2,'c'),(2,'a'),(1,'d'),(4,'e')] @?= encode "aaaabccaadeeee"
         ]
 
 -- tests1_10 :: [Test]
-tests1_10 = [ problem1, problem2, problem3, problem4 ]
-            ++ hUnitTestToTests problem5
-            ++ hUnitTestToTests problem6
-            ++ hUnitTestToTests problem7
-            ++ hUnitTestToTests problem8
-            ++ hUnitTestToTests problem9
-            ++ hUnitTestToTests problem10
+tests1_10 = [ problem1, problem2, problem3, problem4, problem5, problem6, problem7, problem8, problem9, problem10 ]
