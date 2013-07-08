@@ -4,7 +4,7 @@ watch( 'src/.*\.hs' ) do |x|
   result = system("cabal build")
   if result
     puts "built... running tests"
-    result = system("cabal test")
+    result = system("dist/build/test-foo/test-foo")
     if result
       puts ('*'*76).white.on_green
       puts ('*'*36+'PASS'+'*'*36).white.on_green
@@ -14,7 +14,6 @@ watch( 'src/.*\.hs' ) do |x|
       puts ('!'*36+'FAIL'+'!'*36).black.on_red
       puts ('!'*76).black.on_red
       puts $?
-      system("cat dist/test/99haskellproblems-0.1-test-foo.log")
     end
   else
     puts "build failed!"

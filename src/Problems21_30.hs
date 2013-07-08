@@ -1,9 +1,14 @@
 module Problems21_30 where
 
 import Data.List
-import Test.HUnit
 import System.Random
 import System.IO.Unsafe
+
+import Test.Framework
+import Test.Framework.Providers.HUnit
+import Test.Framework.Providers.QuickCheck2
+
+import Test.HUnit as HUnit
 
 {-
  - Problem 21
@@ -17,10 +22,10 @@ insertAt :: a -> [a] -> Int -> [a]
 insertAt x xs n = take i xs ++ x : drop i xs
                   where i = n - 1
 
-problem21 :: Test
-problem21 = test ["Insert an element at a given position into a list."
-                 ~: insertAt 'X' "abcd" 2
-                 ~=? "aXbcd"]
+
+problem21 = testGroup "problem 21" [
+  testCase "Insert an element at a given position into a list."
+  $ insertAt 'X' "abcd" 2 @?= "aXbcd"]
 
 {-
  - Problem 22
@@ -35,10 +40,9 @@ range a b = if a == b
             then [b]
             else a : range (a + 1) b
 
-problem22 :: Test
-problem22 = test [ "Create a list containing all integers in a given range."
-                 ~: range 4 9
-                 ~=? [4,5,6,7,8,9]]
+problem22 = testGroup "problem 22" [
+  testCase "Create a list containing all integers in a given range."
+  $ range 4 9 @?= [4,5,6,7,8,9]]
 
 {-
  - Problem 23
@@ -58,10 +62,9 @@ rndSelect l n = do r <- randomRIO (0, length l - 1)
                    result <- rndSelect (take r l ++ drop (r+1) l) (n - 1)
                    return ((l!!r) : result)
 
-problem23 :: Test
-problem23 = test ["Extract given number of randomly selected elements from list"
-                  ~: length (pureRndSelect "abcdefgh" 3)
-                  ~=? 3 ]
+problem23 = testGroup "problem 23" [
+  testCase "Extract given number of randomly selected elements from list"
+                  $ length (pureRndSelect "abcdefgh" 3) @?= 3 ]
 
 {-
  - Problem 24
@@ -74,10 +77,9 @@ problem23 = test ["Extract given number of randomly selected elements from list"
 diffSelect :: Int -> Int -> [Int]
 diffSelect n r = pureRndSelect [1..r] n
 
-problem24 :: Test
-problem24 = test ["Draw N different random number from the set 1..M"
-                  ~: length (diffSelect 6 49)
-                  ~=? 6 ]
+problem24 = testGroup "problem 24" [
+  testCase "Draw N different random number from the set 1..M"
+                  $ length (diffSelect 6 49) @?= 6 ]
 {-
  - Problem 25
  - Generate a random permutation of the elements of a list.
@@ -91,10 +93,9 @@ rndPermu [] = []
 rndPermu xs = x : rndPermu (delete x xs)
                where x = head (pureRndSelect xs 1)
 
-problem25 :: Test
-problem25 = test ["Generate a random permutation of the elements of a list."
-                  ~: length (rndPermu "abcdef")
-                  ~=? length "abcdef" ]
+problem25 = testGroup "problem 25" [
+  testCase "Generate a random permutation of the elements of a list."
+                  $ length (rndPermu "abcdef") @?= length "abcdef" ]
 
 
 {-
@@ -114,35 +115,19 @@ problem25 = test ["Generate a random permutation of the elements of a list."
 combinations :: (Eq a) => Int -> [a] -> [[a]]
 combinations _ [] = []
 combinations 0 _  = []
-combinations n (y:ys) = if n > 1 
+combinations n (y:ys) = if n > 1
                         then map ((:) y) (combinations (n - 1) ys) ++ combinations n ys
                         else group (y : ys)
 
-problem26 :: Test
-problem26 = test [ "combinations of 0 out of '' "
-                   ~:  0 
-                   ~=? length (combinations 0 ""),
-
-                   "combinations of 1 out of 'a' "
-                   ~:  ["a"]
-                   ~=? combinations 1 "a",
-
-                   "combinations of 1 out of 'ab' "
-                   ~:  ["a", "b"]
-                   ~=? combinations 1 "ab",
-
-                   "combinations of 2 out of 'ab' "
-                   ~:  ["ab"]
-                   ~=? combinations 2 "ab",
-
-                   "combinations of 2 out of 'abc' "
-                   ~: sort ["ab", "bc", "ac"]
-                   ~=? sort (combinations 2 "abc"),
-
-                   "Generate the combinations of K distinct objects chosen from N elements"
-                   ~: 220 
-                   ~=? length (combinations 3 "abcdefghijkl")
-                   ]
+problem26 = testGroup "problem 26" [
+  testCase "combinations of 0 out of '' " $ 0 @?= length (combinations 0 ""),
+  testCase "combinations of 1 out of 'a' " $ ["a"] @?= combinations 1 "a",
+  testCase "combinations of 1 out of 'ab' " $ ["a", "b"] @?= combinations 1 "ab",
+  testCase "combinations of 2 out of 'ab' " $  ["ab"] @?= combinations 2 "ab",
+  testCase "combinations of 2 out of 'abc' " $ sort ["ab", "bc", "ac"] @?= sort (combinations 2 "abc"),
+  testCase "Generate the combinations of K distinct objects chosen from N elements"
+    $ 220 @?= length (combinations 3 "abcdefghijkl")
+  ]
 
 {-
  - Problem 27
@@ -190,10 +175,4 @@ problem26 = test [ "combinations of 0 out of '' "
  -
  -}
 
-tests21_30 :: [Test]
-tests21_30 = [TestLabel "Problem 21" problem21,
-              TestLabel "Problem 22" problem22,
-              TestLabel "Problem 23" problem23,
-              TestLabel "Problem 24" problem24,
-              TestLabel "Problem 25" problem25,
-              TestLabel "Problem 26" problem26]
+tests21_30 = [problem21, problem22, problem23, problem24, problem25, problem26]

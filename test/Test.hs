@@ -9,9 +9,7 @@ import qualified Problems21_30
 
 import System.Exit
 
-tests = Problems1_10.tests1_10
-                --  ++ Problems11_20.tests11_20
-                --  ++ Problems21_30.tests21_30
+tests = Problems1_10.tests1_10 ++ Problems11_20.tests11_20 ++ Problems21_30.tests21_30
 
 -- main::IO()
 -- main = do

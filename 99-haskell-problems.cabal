@@ -29,3 +29,4 @@ Test-Suite test-foo
                     test-framework,
                     test-framework-hunit,
                     test-framework-quickcheck2
+    Ghc-Options:    -threaded -O0
