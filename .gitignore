@@ -2,4 +2,4 @@
 .project
 dist/
 .dist-buildwrapper/
-
+.stack-work/
